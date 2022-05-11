@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "JTJHY7AX3A4745946",
+    "car": "Mercedes",
+    "yearOfManufacture": 2012
+  },
+  {
+    "id": 19,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "WDDEJ7EB9CA904147",
+    "car": "Mercedes",
+    "yearOfManufacture": 2011
+  },
+  {
+    "id": 8,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "JTHBB1BA4A2368927",
+    "car": "Mercedes",
+    "yearOfManufacture": 2010
+  },
+  {
+    "id": 4,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "3VWML7AJ1EM719302",
+    "car": "Mercedes",
+    "yearOfManufacture": 2009
+  },
+  {
+    "id": 15,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "SCFAB01E29G530016",
+    "car": "Mercedes",
+    "yearOfManufacture": 2009
+  },
+  {
+    "id": 13,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "WAUDFAFL3CN113887",
+    "car": "Mercedes",
+    "yearOfManufacture": 2006
+  },
+  {
+    "id": 12,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "3C63D2JL9CG996475",
+    "car": "Mercedes",
+    "yearOfManufacture": 2005
+  },
+  {
+    "id": 10,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "WAUFL54DX1N778884",
+    "car": "Mercedes",
+    "yearOfManufacture": 2003
+  },
+  {
+    "id": 2,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "WAUSVAFA3AN981037",
+    "car": "Mercedes",
+    "yearOfManufacture": 2002
+  },
+  {
+    "id": 3,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "1D7RV1GT5AS972607",
+    "car": "Audi",
+    "yearOfManufacture": 2002
+  },
+  {
+    "id": 9,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "KMHHU6KJ5FU653839",
+    "car": "Mercedes",
+    "yearOfManufacture": 2002
+  },
+  {
+    "id": 5,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "WBS3C9C5XFP659079",
+    "car": "Mercedes",
+    "yearOfManufacture": 2000
+  },
+  {
+    "id": 16,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "5GAKRCKD9DJ324792",
+    "car": "Mercedes",
+    "yearOfManufacture": 1999
+  },
+  {
+    "id": 18,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "5N1AL0MM0EC010506",
+    "car": "Mercedes",
+    "yearOfManufacture": 1998
+  },
+  {
+    "id": 17,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "1FMCU0F71DU160336",
+    "car": "Mercedes",
+    "yearOfManufacture": 1997
+  },
+  {
+    "id": 11,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "1G6AA5RA3F0751373",
+    "car": "Mercedes",
+    "yearOfManufacture": 1995
+  },
+  {
+    "id": 6,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "1FT7W2A69EE388865",
+    "car": "Mercedes",
+    "yearOfManufacture": 1994
+  },
+  {
+    "id": 20,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "SCFAD01EX9G839033",
+    "car": "Mercedes",
+    "yearOfManufacture": 1993
+  },
+  {
+    "id": 7,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "1G6AD5S36D0535064",
+    "car": "Mercedes",
+    "yearOfManufacture": 1991
+  },
+  {
+    "id": 14,
+    "registrationNumber": "AC8779AC",
+    "dateOfRegistration": "2022-02-25T00:00:00",
+    "vinCode": "WAUSG74F39N570261",
+    "car": "Mercedes",
+    "yearOfManufacture": -1989
+  }
+]
