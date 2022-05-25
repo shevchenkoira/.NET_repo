@@ -9,23 +9,22 @@ namespace IraTask_1;
 
 public class Collection<T> : IEnumerable where T:new()
 {
-    public List<Dictionary<string, object>> ObjCollection { get; set; }
+    public List<T> ObjCollection { get; set; }
 
     private readonly string _path;
 
-    private readonly FileManager _fileManager;
+    private readonly FileManager<T> _fileManager;
     public Collection(string path)
     {
         _path = path;
-        _fileManager = new FileManager(_path);
-        ObjCollection = new List<Dictionary<string, Object>>();
+        _fileManager = new FileManager<T>(_path);
+        ObjCollection = new List<T>();
         
         var tempList = _fileManager.DeSerialize();
         foreach (var curr in tempList)
         {
             try
             {
-                ConvertDictionaryTo<T>(curr);
                 ObjCollection.Add(curr);
             }
             catch (Exception e)
@@ -48,20 +47,19 @@ public class Collection<T> : IEnumerable where T:new()
 
     public void Add(T objectToAdd)
     {
-        ObjCollection.Add(this.ToDict(objectToAdd));
+        ObjCollection.Add(objectToAdd);
         _fileManager.Serialize(this.ObjCollection);
     }
 
-    
     public T GetById(int id)
     {
-        foreach (Dictionary<string, object> currentElement in this.ObjCollection)
+        foreach (var currentElement in this.ObjCollection)
         {
             try
             {
-                if (Convert.ToInt32(currentElement["id"].ToString()) == id)
+                if (Convert.ToInt32(typeof(T).GetProperty("id").GetValue(currentElement)) == id)
                 {
-                    return ConvertDictionaryTo<T>(currentElement);
+                    return currentElement;
                 }
             }
             catch (KeyNotFoundException e)
@@ -78,7 +76,7 @@ public class Collection<T> : IEnumerable where T:new()
     {
         for(int i = 0; i < this.ObjCollection.Count; i++)
         {
-            if (Convert.ToInt32(this.ObjCollection[i]["id"].ToString()) == id)
+            if (Convert.ToInt32(typeof(T).GetProperty("id").GetValue(this.ObjCollection[i])) == id)
             {
                 ObjCollection.Remove(ObjCollection[i]);
                 _fileManager.Serialize(ObjCollection);
@@ -87,7 +85,7 @@ public class Collection<T> : IEnumerable where T:new()
         }
     }
 
-    public void Edit(int id, string field, object? change)
+    public void Edit(int id, string field, object change)
     {
         bool isNumeric = int.TryParse(change.ToString(), out _);
 
@@ -95,19 +93,18 @@ public class Collection<T> : IEnumerable where T:new()
         {
             change = int.Parse(change.ToString());
         }
-        
-        Dictionary<string, object> objToEdit = this.ToDict(this.GetById(id));
-        objToEdit[field] = change ?? throw new Exception("Error, you entered nothing to change");
+
+        T objToEdit = this.GetById(id);
         try
         {
-            ConvertDictionaryTo<T>(objToEdit);
+            objToEdit.GetType().GetProperty(field).SetValue(objToEdit, change);
         }
         catch (Exception e)
         {
             throw new ValidationException(e.Message);
         }
         RemoveById(id);
-        Add(ConvertDictionaryTo<T>(objToEdit));
+        Add(objToEdit);
     }
 
     public void Sort(string field = "id", string order = "asc")
@@ -128,9 +125,9 @@ public class Collection<T> : IEnumerable where T:new()
         
         List<T> a = new List<T>();
 
-        foreach (Dictionary<string, object> curr in ObjCollection)
+        foreach (var curr in ObjCollection)
         {
-            a.Add(ConvertDictionaryTo<T>(curr));
+            a.Add(curr);
         }
 
         var query = from obj in a
@@ -149,11 +146,11 @@ public class Collection<T> : IEnumerable where T:new()
         ObjCollection.Clear();
         foreach (var cur in a)
         {
-            ObjCollection.Add(ToDict(cur));
+            ObjCollection.Add(cur);
         }
 
 
-        foreach (Dictionary<string, object> curr in ObjCollection)
+        foreach (var curr in ObjCollection)
         {
             Console.WriteLine(JsonSerializer.Serialize(curr, new JsonSerializerOptions(){WriteIndented = true}));
         }
@@ -167,7 +164,7 @@ public class Collection<T> : IEnumerable where T:new()
         {
             throw new ArgumentException("Search query must be specified");
         }
-        var quer = ObjCollection.Where(x => x.Values.Any(x => x.ToString().Contains(searchQuery)));
+        var quer = ObjCollection.Where(x => ToDict(x).Values.Any(x => x.ToString().ToLower().Contains(searchQuery)));
 
         foreach (var cur in quer)
         {
@@ -186,15 +183,73 @@ public class Collection<T> : IEnumerable where T:new()
     
     public T this[int i]
     {
-        get { return ConvertDictionaryTo<T>(this.ObjCollection[i]); }
-        set { ObjCollection[i] = ToDict(value); }
+        get { return this.ObjCollection[i]; }
+        set { ObjCollection[i] = value; }
     }
     
     public IEnumerator GetEnumerator()
     {
         return this.ObjCollection.GetEnumerator();
     }
+}
 
+public class FileManager<T> where T: new()
+{
+    private readonly JsonSerializerOptions _options;
+    public string Path { get; set; }
+    
+    public FileManager(string path)
+    {
+        this._options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
+            {WriteIndented = true};
+        this.Path = path;
+    }
+    
+    public void Serialize(List<T> objCollection)
+    {
+        if (objCollection.Count == 0)
+        {
+            using (StreamWriter sw = new StreamWriter(Path))
+            {
+                sw.WriteLine("");
+            }
+        }
+        using (StreamWriter sw = new StreamWriter(Path))
+        {
+            sw.WriteLine(JsonSerializer.Serialize(objCollection, this._options));
+        }
+    }
+
+    public List<T> DeSerialize()
+    {
+        string json = File.ReadAllText(Path);
+        if (json.Length == 0)
+        {
+            throw new Exception("Nothing to deserialize");
+        }
+
+        List<Dictionary<string, object>> objectsList =
+            JsonSerializer.Deserialize<List<Dictionary<string, object>>>(json, this._options);
+
+        List<T> returnObj = new List<T>();
+
+        foreach (var cur in objectsList)
+        {
+            try
+            {
+                returnObj.Add(ConvertDictionaryTo<T>(cur));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Object with an id {cur["id"]} needs your attention");
+                Console.WriteLine(e.Message);
+                continue;
+            }
+        }
+        
+        return returnObj;
+    }
+    
     private T ConvertDictionaryTo<T>(IDictionary<string, object> dictionary) where T : new()
     {
         Type type = typeof (T);
@@ -212,66 +267,20 @@ public class Collection<T> : IEnumerable where T:new()
             }
             catch (Exception e)
             {
-                string errorMessage;
-                if (e.InnerException is null)
+                if (e.InnerException != null)
                 {
-                    errorMessage = e.Message;
+                    errorCollection.Append(e.InnerException.Message);
+                    errorCollection.Append("\n");
                 }
-                else
-                {
-                    errorMessage = e.InnerException.Message;
-                }
-                Console.WriteLine(errorMessage);
-                errorCollection.Append(" ");
+                continue;
             }
         }
 
         if (errorCollection.ToString() != "")
         {
-            throw new ValidationException("");
+            throw new ValidationException(errorCollection.ToString());
         }
-        
+
         return ret;
-    }
-}
-
-public class FileManager
-{
-    private readonly JsonSerializerOptions _options;
-    public string Path { get; set; }
-    
-    public FileManager(string path)
-    {
-        this._options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
-            {WriteIndented = true};
-        this.Path = path;
-    }
-    
-    public void Serialize(List<Dictionary<string, object>> objCollection)
-    {
-        if (objCollection.Count == 0)
-        {
-            using (StreamWriter sw = new StreamWriter(Path))
-            {
-                sw.WriteLine("");
-            }
-        }
-        using (StreamWriter sw = new StreamWriter(Path))
-        {
-            sw.WriteLine(JsonSerializer.Serialize(objCollection, _options));
-        }
-    }
-
-    public List<Dictionary<string, object>> DeSerialize()
-    {
-        string json = File.ReadAllText(Path);
-        if (json.Length == 0)
-        {
-            throw new Exception("Nothing to deserialize");
-        }
-        List<Dictionary<string, object>> objectsDict =
-            JsonSerializer.Deserialize<List<Dictionary<string, object>>>(json, this._options);
-
-        return objectsDict;
     }
 }

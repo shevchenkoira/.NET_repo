@@ -5,6 +5,7 @@ using System.Text.Json;
 
 namespace IraTask_1;
 
+
 public class Menu<T> where T:new()
 {
     public Collection<T> ObjCollection;
@@ -102,9 +103,11 @@ public class Menu<T> where T:new()
     private void RemoveById()
     {
         int id;
+        Console.WriteLine("Enter id of an item - you want to delete");
+        string input = ValidateInput("You have entered wrong id");
         try
         {
-            id = Convert.ToInt32(ValidateInput("You have entered wrong id"));
+            id = Convert.ToInt32(input);
         }
         catch (Exception e)
         {
@@ -121,6 +124,7 @@ public class Menu<T> where T:new()
         try
         {
             id = Convert.ToInt32(ValidateInput("You have entered wrong id"));
+            
         }
         catch (Exception e)
         {
