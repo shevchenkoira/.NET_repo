@@ -5,7 +5,6 @@ using System.Text.Json;
 
 namespace IraTask_1;
 
-
 public class Menu<T> where T:new()
 {
     public Collection<T> ObjCollection;

@@ -52,6 +52,7 @@ public class Collection<T> : IEnumerable where T:new()
         _fileManager.Serialize(this.ObjCollection);
     }
 
+    
     public T GetById(int id)
     {
         foreach (Dictionary<string, object> currentElement in this.ObjCollection)
